@@ -76,7 +76,9 @@ def _main_():
     yolo = YOLO(input_size=tuple(config['model']['input_size']),
                 grid_size=grid_size,
                 bbox_count=int(config['model']['bboxes_per_grid_cell']),
-                classes=config['model']['class_names'])
+                classes=config['model']['class_names'],
+                lambda_coord=config['model']['lambda_coord'],
+                lambda_noobj=config['model']['lambda_noobj'])
 
     yolo.train(train_data=train_data_infos)
 

@@ -4,7 +4,9 @@
       "grid_size":    7,
       "bboxes_per_grid_cell": 2,
       "class_names":  ["bus", "traffic light", "traffic sign", "person", "bike", "truck", "motor", "car","train", "rider"],
-      "class_ids":    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      "class_ids":    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "lambda_coord": 5,
+      "lambda_noobj": 0.5
 
   },
 
