@@ -1,0 +1,86 @@
+
+import json
+import os
+import cv2
+
+from model import YOLO
+from constants import CONFIG_FILE
+from pathlib2 import Path
+import glob
+
+
+ANNOTATION_FILE_EXTENSION = '.txt'
+IMAGE_EXTENSION = '.png'
+
+
+def parse_annotation_file(path):
+    objects = []
+
+    with open(str(path)) as fp:
+        lines = fp.readlines()
+
+    for line in lines:
+        object = {}
+
+        class_id, x_center, y_center, width, height = line.strip().split(' ')
+
+        object['class_id'] = int(class_id)
+        object['x_center'] = float(x_center)
+        object['y_center'] = float(y_center)
+        object['width'] = float(width)
+        object['height'] = float(height)
+
+        objects.append(object)
+
+    return objects
+
+
+def parse_input_data(image_folder, annotation_folder):
+    data_infos = []
+
+    if not os.path.exists(str(image_folder)) or not os.path.exists(str(annotation_folder)):
+        raise ValueError('Entered file path does not exist! Entered Paths: ' + str(image_folder) + " and " + str(annotation_folder))
+
+    image_names = glob.glob(str(image_folder) + '/*' + IMAGE_EXTENSION)
+    if len(image_names) == 0:
+        raise ValueError('No images found')
+
+    for image_name in image_names:
+        annotation_path = annotation_folder.joinpath(Path(image_name).stem + ANNOTATION_FILE_EXTENSION)
+
+        data_info = {}
+        data_info["image_path"] = image_name
+        data_info["objects"] = parse_annotation_file(annotation_path)
+
+        data_infos.append(data_info)
+
+    return data_infos
+
+
+def _main_():
+    with open(CONFIG_FILE) as config_buffer:
+        config = json.loads(config_buffer.read())
+
+    grid_size = int(config['model']['grid_size'])
+
+    ################################
+    # Data preprocessing
+    ################################
+    train_data_infos = parse_input_data(image_folder=Path(config['train']['train_images_folder']),
+                                        annotation_folder=Path(config['train']['train_annotations_folder']))
+
+
+    ################################
+    # Make and train model
+    ################################
+    yolo = YOLO(input_size=tuple(config['model']['input_size']),
+                grid_size=grid_size,
+                bbox_count=int(config['model']['bboxes_per_grid_cell']),
+                classes=config['model']['class_names'])
+
+    yolo.train(train_data=train_data_infos)
+
+
+
+if __name__ == '__main__':
+    _main_()
