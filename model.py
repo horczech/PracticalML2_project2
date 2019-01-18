@@ -1,6 +1,3 @@
-import math
-import cv2
-import numpy as np
 import tensorflow as tf
 from keras.applications.inception_v3 import InceptionV3
 from keras.callbacks import ModelCheckpoint
@@ -12,9 +9,6 @@ from utils import calculate_IOU
 from data_generator import DataGenerator
 
 
-BBOX_PARAMS_COUNT = 5
-
-
 class YOLO:
     def __init__(self,
                  input_size,
@@ -22,61 +16,20 @@ class YOLO:
                  bbox_count,
                  classes,
                  lambda_coord=5,
-                 lambda_noobj=0.5):
+                 lambda_noobj=0.5,
+                 bbox_params=5):
         self.input_size = input_size
         self.grid_size = grid_size
         self.bbox_count = bbox_count
         self.classes = classes
         self.lambda_coord = lambda_coord
         self.lambda_noobj = lambda_noobj
+        self.bbox_params = bbox_params
 
         # grid_cell_count_row x grid_cell_count_coll x bboxes_count_per_cell + class_count
-        output_layer_size = self.grid_size * self.grid_size * (self.bbox_count * BBOX_PARAMS_COUNT + len(self.classes))
+        output_layer_size = self.grid_size * self.grid_size * (self.bbox_count * self.bbox_params + len(self.classes))
 
         self.model = self.build_yolo_model(output_layer_size)
-
-    def parse_object_data(self, object_infos):
-        target_tensor = np.zeros((self.grid_size, self.grid_size, BBOX_PARAMS_COUNT + len(self.classes)))
-
-        for bbox in object_infos:
-            # ToDo: what to do when multiple objects will be multiple objects in one cell
-            width = bbox['width']
-            height = bbox['height']
-
-            box_confidence_score = 1
-
-            class_id = bbox['class_id']
-            class_probabilities = np.zeros(shape=len(self.classes))
-            class_probabilities[class_id] = 1
-
-            x, x_cell_idx = math.modf(bbox['x_center'] * self.grid_size)
-
-            y, y_cell_idx = math.modf(bbox['y_center'] * self.grid_size)
-
-            # (x, y, w, h, box confidence score, class probabilities)
-            object_tensor = np.array([x, y, width, height, box_confidence_score])
-            object_tensor = np.append(object_tensor, class_probabilities)
-            target_tensor[int(x_cell_idx), int(y_cell_idx), :] = object_tensor
-
-        return target_tensor
-
-    def load_training_data(self, data_infos):
-        images = []
-        targets = []
-
-        for data_info in data_infos:
-            img_path = str(data_info['image_path'])
-
-            img = cv2.imread(img_path)
-            img = cv2.resize(img, (self.input_size[0], self.input_size[1]))
-            img = cv2.normalize(img, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-
-            target = self.parse_object_data(data_info['objects'])
-
-            targets.append(target)
-            images.append(img)
-
-        return np.asarray(images), np.asarray(targets)
 
     def train_gen(self, training_infos, validation_infos, save_weights_path, batch_size, nb_epochs, learning_rate):
 
@@ -84,7 +37,7 @@ class YOLO:
         params = {'batch_size': batch_size,
                   'shuffle': True,
                   'X_shape': self.input_size,
-                  'y_shape': self.grid_size * self.grid_size * (BBOX_PARAMS_COUNT+len(self.classes)),
+                  'y_shape': self.grid_size * self.grid_size * (self.bbox_params+len(self.classes)),
                   'grid_size': self.grid_size,
                   'class_count': len(self.classes)
                   }
@@ -112,8 +65,8 @@ class YOLO:
 
     def custom_loss(self, y_true, y_pred):
 
-        y_true_shape = (self.grid_size, self.grid_size, BBOX_PARAMS_COUNT + len(self.classes))
-        y_pred_shape = (self.grid_size, self.grid_size, self.bbox_count * BBOX_PARAMS_COUNT + len(self.classes))
+        y_true_shape = (self.grid_size, self.grid_size, self.bbox_params + len(self.classes))
+        y_pred_shape = (self.grid_size, self.grid_size, self.bbox_count * self.bbox_params + len(self.classes))
 
         y_true = tf.reshape(y_true, y_true_shape)
         y_pred = tf.reshape(y_pred, y_pred_shape)
@@ -215,6 +168,8 @@ class YOLO:
                                       input_tensor=None,
                                       input_shape=self.input_size,
                                       pooling=None)
+
+        # ToDo: Is it working?
         inception_model.trainable = False
 
         x = inception_model(input_image)

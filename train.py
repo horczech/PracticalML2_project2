@@ -1,7 +1,5 @@
-
 import json
 import os
-import cv2
 
 from model import YOLO
 from constants import CONFIG_FILE
@@ -78,7 +76,8 @@ def _main_():
                 bbox_count          = int(config['model']['bboxes_per_grid_cell']),
                 classes             = config['model']['class_names'],
                 lambda_coord        = config['model']['lambda_coord'],
-                lambda_noobj        = config['model']['lambda_noobj'])
+                lambda_noobj        = config['model']['lambda_noobj'],
+                bbox_params         = config['model']['bbox_params'])
 
     yolo.train_gen(training_infos       = train_data_infos,
                    validation_infos     = validation_data_infos,
