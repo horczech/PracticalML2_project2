@@ -1,16 +1,16 @@
-import tensorflow as tf
-from keras.layers.advanced_activations import LeakyReLU
-from keras.layers import Reshape, Activation, Conv2D, Input, MaxPooling2D, BatchNormalization, Flatten, Dense, Lambda, \
-    MaxPool2D, ReLU, Convolution2D, ZeroPadding2D
-from keras.optimizers import Adam
-from keras.models import Model
-import keras.backend as K
-from keras.applications.inception_v3 import InceptionV3
-from utils import calculate_IOU
-
+import math
 import cv2
 import numpy as np
-import math
+import tensorflow as tf
+from keras.applications.inception_v3 import InceptionV3
+from keras.callbacks import ModelCheckpoint
+from keras.layers import Conv2D, Input, Flatten, Dense, MaxPool2D
+from keras.layers.advanced_activations import LeakyReLU
+from keras.models import Model
+from keras.optimizers import Adam
+from utils import calculate_IOU
+from data_generator import DataGenerator
+
 
 BBOX_PARAMS_COUNT = 5
 
@@ -22,8 +22,7 @@ class YOLO:
                  bbox_count,
                  classes,
                  lambda_coord=5,
-                 lambda_noobj=0.5
-                 ):
+                 lambda_noobj=0.5):
         self.input_size = input_size
         self.grid_size = grid_size
         self.bbox_count = bbox_count
@@ -79,23 +78,37 @@ class YOLO:
 
         return np.asarray(images), np.asarray(targets)
 
-    def train(self, train_data):
-        # ToDo: Make train and validation generators
+    def train_gen(self, training_infos, validation_infos, save_weights_path, batch_size, nb_epochs, learning_rate):
 
-        x_train, y_train = self.load_training_data(data_infos=train_data)
+        # create data generator
+        params = {'batch_size': batch_size,
+                  'shuffle': True,
+                  'X_shape': self.input_size,
+                  'y_shape': self.grid_size * self.grid_size * (BBOX_PARAMS_COUNT+len(self.classes)),
+                  'grid_size': self.grid_size,
+                  'class_count': len(self.classes)
+                  }
 
+        training_generator = DataGenerator(data_list=training_infos, **params)
+        valid_generator = DataGenerator(data_list=validation_infos, **params)
 
-        # ToDo: What optimizer use???
-        # optimizer = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-        self.model.compile(loss=self.custom_loss, optimizer='adam')
+        checkpoint = ModelCheckpoint(save_weights_path,
+                                     monitor='val_loss',
+                                     verbose=1,
+                                     save_best_only=False,
+                                     save_weights_only=True,
+                                     mode='min',
+                                     period=1)
+        callbacks_list = [checkpoint]
 
-        self.model.fit(x_train, y_train, epochs=1, batch_size=1)
+        # ToDo: A lot of parameters... maybe it is good idea to tune them
+        optimizer = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        self.model.compile(loss=self.custom_loss, optimizer=optimizer)
 
-    def train_gen(self, training_generator):
-
-        self.model.compile(loss=self.custom_loss, optimizer='adam')
-
-        self.model.fit_generator(generator=training_generator, epochs=1)
+        self.model.fit_generator(generator          = training_generator,
+                                 validation_data    = valid_generator,
+                                 epochs             = nb_epochs,
+                                 callbacks          = callbacks_list)
 
     def custom_loss(self, y_true, y_pred):
 
@@ -202,6 +215,7 @@ class YOLO:
                                       input_tensor=None,
                                       input_shape=self.input_size,
                                       pooling=None)
+        inception_model.trainable = False
 
         x = inception_model(input_image)
 

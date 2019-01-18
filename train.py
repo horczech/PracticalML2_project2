@@ -7,7 +7,6 @@ from model import YOLO
 from constants import CONFIG_FILE
 from pathlib2 import Path
 import glob
-from data_generator import DataGenerator
 
 
 ANNOTATION_FILE_EXTENSION = '.txt'
@@ -62,43 +61,31 @@ def _main_():
     with open(CONFIG_FILE) as config_buffer:
         config = json.loads(config_buffer.read())
 
-    grid_size = int(config['model']['grid_size'])
-    bbox_per_cell_count = int(config['model']['bboxes_per_grid_cell'])
-    class_names = config['model']['class_names']
-    bbox_params = int(config['model']['bbox_params'])
-    img_shape = config['model']['input_size']
-    output_shape = grid_size * grid_size * (bbox_params+len(class_names))
-
     ################################
-    # Data preprocessing
+    # Load data info
     ################################
     train_data_infos = parse_input_data(image_folder=Path(config['train']['train_images_folder']),
                                         annotation_folder=Path(config['train']['train_annotations_folder']))
 
-    # create data generator
-    params = {'batch_size': 1,
-              'shuffle': True,
-              'X_shape': img_shape,
-              'y_shape': int(output_shape),
-              'grid_size': int(grid_size),
-              'class_count': len(class_names)
-              }
-
-    training_generator = DataGenerator(data_list=train_data_infos, **params)
+    validation_data_infos = parse_input_data(image_folder=Path(config['train']['validation_images_folder']),
+                                             annotation_folder=Path(config['train']['validation_annotations_folder']))
 
     ################################
     # Make and train model
     ################################
-    yolo = YOLO(input_size=tuple(config['model']['input_size']),
-                grid_size=grid_size,
-                bbox_count=int(config['model']['bboxes_per_grid_cell']),
-                classes=config['model']['class_names'],
-                lambda_coord=config['model']['lambda_coord'],
-                lambda_noobj=config['model']['lambda_noobj'])
+    yolo = YOLO(input_size          = tuple(config['model']['input_size']),
+                grid_size           = int(config['model']['grid_size']),
+                bbox_count          = int(config['model']['bboxes_per_grid_cell']),
+                classes             = config['model']['class_names'],
+                lambda_coord        = config['model']['lambda_coord'],
+                lambda_noobj        = config['model']['lambda_noobj'])
 
-    # yolo.train(train_data=train_data_infos)
-
-    yolo.train_gen(training_generator)
+    yolo.train_gen(training_infos       = train_data_infos,
+                   validation_infos     = validation_data_infos,
+                   save_weights_path    = config['train']['trained_weights_path'],
+                   batch_size           = config['train']['batch_size'],
+                   nb_epochs            = config['train']['nb_epochs'],
+                   learning_rate        = config['train']['learning_rate'])
 
 
 if __name__ == '__main__':
