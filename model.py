@@ -129,7 +129,6 @@ class YOLO:
         iou_bbox2 = calculate_IOU(predicted_bbox_2, true_box)
 
         responsible_pred_bbox = tf.greater(iou_bbox1, iou_bbox2)
-
         responsible_pred_bbox = tf.tile(tf.expand_dims(responsible_pred_bbox, axis=2), [1, 1, 5])
 
         responsible_pred_bbox = tf.where(responsible_pred_bbox, predicted_bbox_1, predicted_bbox_2)

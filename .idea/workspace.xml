@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1ed4049-d134-4d9e-b422-f905cc439d8b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/dummy_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/dummy_loss.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,8 +17,20 @@
       <file leaf-file-name="model.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="97" selection-start-line="97" selection-end-line="97" />
+            <state relative-caret-position="411">
+              <caret line="183" column="27" lean-forward="true" selection-start-line="183" selection-start-column="27" selection-end-line="183" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dummy_loss.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dummy_loss.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="627">
+              <caret line="183" column="28" lean-forward="true" selection-start-line="183" selection-start-column="28" selection-end-line="183" selection-end-column="28" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -32,8 +41,8 @@
       <file leaf-file-name="data_generator.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="50" column="105" selection-start-line="50" selection-start-column="105" selection-end-line="50" selection-end-column="105" />
+            <state relative-caret-position="133">
+              <caret line="64" column="43" selection-start-line="64" selection-start-column="26" selection-end-line="64" selection-end-column="43" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -53,8 +62,8 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
-              <caret line="101" lean-forward="true" selection-start-line="101" selection-end-line="101" />
+            <state relative-caret-position="482">
+              <caret line="86" column="32" lean-forward="true" selection-start-line="86" selection-start-column="32" selection-end-line="86" selection-end-column="32" />
               <folding>
                 <element signature="e#1#12#0" expanded="true" />
               </folding>
@@ -101,9 +110,9 @@
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/tutorial.py" />
         <option value="$PROJECT_DIR$/config.json" />
-        <option value="$PROJECT_DIR$/model.py" />
         <option value="$PROJECT_DIR$/train.py" />
         <option value="$PROJECT_DIR$/data_generator.py" />
+        <option value="$PROJECT_DIR$/model.py" />
       </list>
     </option>
   </component>
@@ -128,12 +137,6 @@
               <item name="YOLO_v1" type="b2602c69:ProjectViewProjectNode" />
               <item name="YOLO_v1" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="YOLO_v1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="YOLO_v1" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="training_annotations" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -170,7 +173,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/dummy_loss.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dummy_loss.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -280,13 +283,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.32848486" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49964765" visible="true" weight="0.5018182" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49964765" visible="true" weight="0.054545455" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -384,9 +388,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/data_generator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -666,16 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/dummy_loss.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-62">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tutorial.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -703,30 +694,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="101" lean-forward="true" selection-start-line="101" selection-end-line="101" />
-          <folding>
-            <element signature="e#1#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/data/training_images/b1c9c847-3bda4659.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/model.py">
+    <entry file="file://$PROJECT_DIR$/dummy_loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="97" selection-start-line="97" selection-end-line="97" />
+        <state relative-caret-position="627">
+          <caret line="183" column="28" lean-forward="true" selection-start-line="183" selection-start-column="28" selection-end-line="183" selection-end-column="28" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="183" column="27" lean-forward="true" selection-start-line="183" selection-start-column="27" selection-end-line="183" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="86" column="32" lean-forward="true" selection-start-line="86" selection-start-column="32" selection-end-line="86" selection-end-column="32" />
+          <folding>
+            <element signature="e#1#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data_generator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="50" column="105" selection-start-line="50" selection-start-column="105" selection-end-line="50" selection-end-column="105" />
+        <state relative-caret-position="133">
+          <caret line="64" column="43" selection-start-line="64" selection-start-column="26" selection-end-line="64" selection-end-column="43" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
