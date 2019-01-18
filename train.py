@@ -7,6 +7,7 @@ from model import YOLO
 from constants import CONFIG_FILE
 from pathlib2 import Path
 import glob
+from data_generator import DataGenerator
 
 
 ANNOTATION_FILE_EXTENSION = '.txt'
@@ -62,6 +63,11 @@ def _main_():
         config = json.loads(config_buffer.read())
 
     grid_size = int(config['model']['grid_size'])
+    bbox_per_cell_count = int(config['model']['bboxes_per_grid_cell'])
+    class_names = config['model']['class_names']
+    bbox_params = int(config['model']['bbox_params'])
+    img_shape = config['model']['input_size']
+    output_shape = grid_size * grid_size * (bbox_params+len(class_names))
 
     ################################
     # Data preprocessing
@@ -69,6 +75,16 @@ def _main_():
     train_data_infos = parse_input_data(image_folder=Path(config['train']['train_images_folder']),
                                         annotation_folder=Path(config['train']['train_annotations_folder']))
 
+    # create data generator
+    params = {'batch_size': 1,
+              'shuffle': True,
+              'X_shape': img_shape,
+              'y_shape': int(output_shape),
+              'grid_size': int(grid_size),
+              'class_count': len(class_names)
+              }
+
+    training_generator = DataGenerator(data_list=train_data_infos, **params)
 
     ################################
     # Make and train model
@@ -80,8 +96,9 @@ def _main_():
                 lambda_coord=config['model']['lambda_coord'],
                 lambda_noobj=config['model']['lambda_noobj'])
 
-    yolo.train(train_data=train_data_infos)
+    # yolo.train(train_data=train_data_infos)
 
+    yolo.train_gen(training_generator)
 
 
 if __name__ == '__main__':

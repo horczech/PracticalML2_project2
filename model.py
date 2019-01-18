@@ -8,14 +8,11 @@ import keras.backend as K
 from keras.applications.inception_v3 import InceptionV3
 from utils import calculate_IOU
 
-
 import cv2
 import numpy as np
 import math
 
 BBOX_PARAMS_COUNT = 5
-
-
 
 
 class YOLO:
@@ -34,7 +31,6 @@ class YOLO:
         self.lambda_coord = lambda_coord
         self.lambda_noobj = lambda_noobj
 
-
         # grid_cell_count_row x grid_cell_count_coll x bboxes_count_per_cell + class_count
         output_layer_size = self.grid_size * self.grid_size * (self.bbox_count * BBOX_PARAMS_COUNT + len(self.classes))
 
@@ -45,12 +41,10 @@ class YOLO:
 
         for bbox in object_infos:
             # ToDo: what to do when multiple objects will be multiple objects in one cell
-
             width = bbox['width']
             height = bbox['height']
 
             box_confidence_score = 1
-
 
             class_id = bbox['class_id']
             class_probabilities = np.zeros(shape=len(self.classes))
@@ -91,19 +85,22 @@ class YOLO:
         x_train, y_train = self.load_training_data(data_infos=train_data)
 
 
-        # ToDo: I coppied that line -> should research that
+        # ToDo: What optimizer use???
         # optimizer = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-
-        # self.model.compile(loss=self.custom_loss, optimizer='adam')
         self.model.compile(loss=self.custom_loss, optimizer='adam')
 
         self.model.fit(x_train, y_train, epochs=1, batch_size=1)
 
+    def train_gen(self, training_generator):
+
+        self.model.compile(loss=self.custom_loss, optimizer='adam')
+
+        self.model.fit_generator(generator=training_generator, epochs=1)
 
     def custom_loss(self, y_true, y_pred):
 
-        y_true_shape = (self.grid_size, self.grid_size, BBOX_PARAMS_COUNT+len(self.classes))
-        y_pred_shape = (self.grid_size, self.grid_size, self.bbox_count*BBOX_PARAMS_COUNT+len(self.classes))
+        y_true_shape = (self.grid_size, self.grid_size, BBOX_PARAMS_COUNT + len(self.classes))
+        y_pred_shape = (self.grid_size, self.grid_size, self.bbox_count * BBOX_PARAMS_COUNT + len(self.classes))
 
         y_true = tf.reshape(y_true, y_true_shape)
         y_pred = tf.reshape(y_pred, y_pred_shape)
@@ -209,7 +206,6 @@ class YOLO:
 
         x = inception_model(input_image)
 
-
         # Layer 1
         x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same', name='yolo_conv_1')(x)
         x = LeakyReLU(alpha=0.1, name='yolo_relu_1')(x)
@@ -228,7 +224,6 @@ class YOLO:
 
         x = Flatten()(x)
 
-
         # Layer 29
         x = Dense(units=4096, name='yolo_dense_1')(x)
         x = LeakyReLU(alpha=0.1, name='yolo_relu_5')(x)
@@ -237,12 +232,9 @@ class YOLO:
         x = Dense(units=output_layer_size, name='yolo_dense_2')(x)
         x = LeakyReLU(alpha=0.0, name='yolo_relu_6')(x)
 
-
         model = Model(inputs=input_image, outputs=x)
 
         return model
-
-
 
     def build_network(self, input_size, output_layer_size):
         input_image = Input(shape=input_size, name='input_layer')
@@ -330,7 +322,6 @@ class YOLO:
         # Layer 22
         x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
         x = LeakyReLU(alpha=0.1, name='LeakyRelu_18')(x)
-
 
         # Layer 23
         x = Conv2D(filters=512, kernel_size=(1, 1), padding='same')(x)
