@@ -7,9 +7,6 @@ from pathlib2 import Path
 import glob
 
 
-ANNOTATION_FILE_EXTENSION = '.txt'
-IMAGE_EXTENSION = '.png'
-
 
 def parse_annotation_file(path):
     objects = []
@@ -33,18 +30,18 @@ def parse_annotation_file(path):
     return objects
 
 
-def parse_input_data(image_folder, annotation_folder):
+def parse_input_data(image_folder, annotation_folder, annotation_extension, image_extension):
     data_infos = []
 
     if not os.path.exists(str(image_folder)) or not os.path.exists(str(annotation_folder)):
         raise ValueError('Entered file path does not exist! Entered Paths: ' + str(image_folder) + " and " + str(annotation_folder))
 
-    image_names = glob.glob(str(image_folder) + '/*' + IMAGE_EXTENSION)
+    image_names = glob.glob(str(image_folder) + '/*' + image_extension)
     if len(image_names) == 0:
         raise ValueError('No images found')
 
     for image_name in image_names:
-        annotation_path = annotation_folder.joinpath(Path(image_name).stem + ANNOTATION_FILE_EXTENSION)
+        annotation_path = annotation_folder.joinpath(Path(image_name).stem + annotation_extension)
 
         data_info = {}
         data_info["image_path"] = image_name
@@ -63,10 +60,14 @@ def _main_():
     # Load data info
     ################################
     train_data_infos = parse_input_data(image_folder=Path(config['train']['train_images_folder']),
-                                        annotation_folder=Path(config['train']['train_annotations_folder']))
+                                        annotation_folder=Path(config['train']['train_annotations_folder']),
+                                        annotation_extension=config['train']['annotations_format_extension'],
+                                        image_extension=config['train']['image_format_extension'])
 
     validation_data_infos = parse_input_data(image_folder=Path(config['train']['validation_images_folder']),
-                                             annotation_folder=Path(config['train']['validation_annotations_folder']))
+                                             annotation_folder=Path(config['train']['validation_annotations_folder']),
+                                             annotation_extension=config['train']['annotations_format_extension'],
+                                             image_extension=config['train']['image_format_extension'])
 
     ################################
     # Make and train model
