@@ -98,7 +98,7 @@ class YOLO:
         
         y_true = tf.reshape(y_true, y_true_shape, name='reshape_y_true')
         y_pred = tf.reshape(y_pred, y_pred_shape, name='reshape_y_pred')
-        #y_print = tf.Print(y_true, [y_true[0, 10, 10, :], y_pred[0, :, :, :]], message='\n\ny_true, y_pred: ', summarize=10000)
+        # y_pred = tf.Print(y_pred, [y_true[0, 10, 10, :], y_pred[0, :, :, :]], message='\n\ny_true, y_pred: ', summarize=10000)
 
         # # # # # # # # # # # # # # # # # # #
         # parse data
@@ -112,9 +112,9 @@ class YOLO:
         
         predicted_class_prob = y_pred[:, :, :, 10:]
         
-        #print(predicted_bbox_1) #(?, 21, 21, 5)
-        #print(predicted_bbox_2) #(?, 21, 21, 5)
-        #print(predicted_class_prob) #(?, 21, 21, 10)
+        # print(predicted_bbox_1) #(?, 21, 21, 5)
+        # print(predicted_bbox_2) #(?, 21, 21, 5)
+        # print(predicted_class_prob) #(?, 21, 21, 10)
         
         true_box = y_true[:, :, :, :4]
         true_object_confidence = y_true[:, :, :, 4]
@@ -132,6 +132,8 @@ class YOLO:
         #(?, 21, 21)
         iou_bbox2 = calculate_IOU(predicted_bbox_2, true_box)
         #(?, 21, 21)
+
+        # y_pred = tf.Print(y_pred, [y_true[0, 10, 10, :], y_pred[0, :, :, :]], message='\n\ny_true, y_pred: ', summarize=10000)
         
         responsible_pred_bbox = tf.greater(iou_bbox1, iou_bbox2)
         #print(responsible_pred_bbox)#(?, 21, 21)
