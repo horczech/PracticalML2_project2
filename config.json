@@ -17,7 +17,8 @@
     "train_annotations_folder":      "data/real_data/training_annotations",
     "validation_images_folder":      "data/real_data/validation_images",
     "validation_annotations_folder": "data/real_data/validation_annotations",
-    "trained_weights_path":          "weights/weights.{epoch:02d}-{val_loss:.2f}.hdf5",
+
+    "model_path":                    "trained_models/",
 
     "image_format_extension":        ".jpg",
     "annotations_format_extension":  ".txt",

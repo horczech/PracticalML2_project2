@@ -1,1 +1,6 @@
 *.pyc
+.idea/workspace.xml
+logs/*
+trained_models/*
+*.hdf5
+

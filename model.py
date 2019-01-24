@@ -1,13 +1,14 @@
 import tensorflow as tf
 from keras.applications.inception_v3 import InceptionV3
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, TensorBoard
 from keras.layers import Conv2D, Input, Flatten, Dense, MaxPool2D
 from keras.layers.advanced_activations import LeakyReLU
-from keras.models import Model
+from keras.models import Model, load_model
 from keras import optimizers
 from utils import calculate_IOU
 from data_generator import DataGenerator
-from keras.activations import relu
+import os
+from constants import LOG_FILE_PATH
 
 
 class YOLO:
@@ -32,9 +33,30 @@ class YOLO:
 
         self.model = self.build_yolo_model(output_layer_size)
 
-    def train_gen(self, training_infos, validation_infos, save_weights_path, batch_size, nb_epochs, learning_rate):
+    def train_gen(self, training_infos, validation_infos, save_model_path, batch_size, nb_epochs, learning_rate, use_pretrained_model, model_name):
 
-        # create data generator
+        ################################
+        # Prepare the model
+        ################################
+        # if use_pretrained_model is True than rewrite the default model with the model in the save_model_path
+
+        save_model_path = save_model_path + model_name
+
+        if use_pretrained_model:
+            if os.path.isfile(save_model_path):
+                self.model = load_model(save_model_path, custom_objects={'custom_loss': self.custom_loss})
+            else:
+                raise ValueError("No pretrained model found in path: {}".format(save_model_path))
+        else:
+            # ToDo: A lot of parameters... maybe it is good idea to tune them
+            # optimizer = optimizers.Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+            # sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+            optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
+            self.model.compile(loss=self.custom_loss, optimizer=optimizer)
+
+        ################################
+        # Create data generators
+        ################################
         params = {'batch_size': batch_size,
                   'shuffle': True,
                   'X_shape': self.input_size,
@@ -46,21 +68,24 @@ class YOLO:
         training_generator = DataGenerator(data_list=training_infos, **params)
         valid_generator = DataGenerator(data_list=validation_infos, **params)
 
-        checkpoint = ModelCheckpoint(save_weights_path,
-                                     monitor='val_loss',
-                                     verbose=1,
-                                     save_best_only=False,
-                                     save_weights_only=True,
-                                     mode='min',
-                                     period=1)
-        callbacks_list = [checkpoint]
+        ################################
+        # Create callbacks
+        ################################
+        checkpoint = ModelCheckpoint(filepath           = use_pretrained_model,
+                                     monitor            = 'val_loss',
+                                     verbose            = 1,
+                                     save_best_only     = True,
+                                     save_weights_only  = False,
+                                     mode               = 'min',
+                                     period             = 1)
 
-        # ToDo: A lot of parameters... maybe it is good idea to tune them
-        #optimizer = optimizers.Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-        #sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-        optimizer = optimizers.SGD(lr=1e-16,decay=1e-6, nesterov=True)
-        self.model.compile(loss=self.custom_loss, optimizer=optimizer)
+        tensorboard = TensorBoard(log_dir=LOG_FILE_PATH+model_name)
 
+        callbacks_list = [checkpoint, tensorboard]
+
+        ################################
+        # Train
+        ################################
         self.model.fit_generator(generator          = training_generator,
                                  validation_data    = valid_generator,
                                  epochs             = nb_epochs,

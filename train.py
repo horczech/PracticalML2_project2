@@ -82,10 +82,12 @@ def _main_():
 
     yolo.train_gen(training_infos       = train_data_infos,
                    validation_infos     = validation_data_infos,
-                   save_weights_path    = config['train']['trained_weights_path'],
+                   save_model_path      = config['train']['model_path'],
                    batch_size           = config['train']['batch_size'],
                    nb_epochs            = config['train']['nb_epochs'],
-                   learning_rate        = config['train']['learning_rate'])
+                   learning_rate        = config['train']['learning_rate'],
+                   use_pretrained_model = False,
+                   model_name           = 'trial_1.hdf5')
 
 
 if __name__ == '__main__':
