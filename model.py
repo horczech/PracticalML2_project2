@@ -71,7 +71,7 @@ class YOLO:
         ################################
         # Create callbacks
         ################################
-        checkpoint = ModelCheckpoint(filepath           = use_pretrained_model,
+        checkpoint = ModelCheckpoint(filepath           = save_model_path,
                                      monitor            = 'val_loss',
                                      verbose            = 1,
                                      save_best_only     = True,
