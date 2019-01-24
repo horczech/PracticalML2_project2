@@ -13,10 +13,10 @@
   },
 
   "train":{
-    "train_images_folder":           "data/real_data/training_images",
-    "train_annotations_folder":      "data/real_data/training_annotations",
-    "validation_images_folder":      "data/real_data/validation_images",
-    "validation_annotations_folder": "data/real_data/validation_annotations",
+    "train_images_folder":           "data/dummy_data/training_images",
+    "train_annotations_folder":      "data/dummy_data/training_annotations",
+    "validation_images_folder":      "data/dummy_data/validation_images",
+    "validation_annotations_folder": "data/dummy_data/validation_annotations",
 
     "model_path":                    "trained_models/",
 
@@ -24,7 +24,7 @@
     "image_format_extension":        ".npy",
     "annotations_format_extension":  ".txt",
 
-    "batch_size":           2,
+    "batch_size":           1,
     "nb_epochs":            2,
     "learning_rate":        1e-6,
     "use_pretrained_model": false,
