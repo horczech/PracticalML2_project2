@@ -21,7 +21,7 @@
     "model_path":                    "trained_models/",
 
 
-    "image_format_extension":        ".jpg",
+    "image_format_extension":        ".npy",
     "annotations_format_extension":  ".txt",
 
     "batch_size":           2,

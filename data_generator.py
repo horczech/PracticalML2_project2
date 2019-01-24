@@ -56,7 +56,9 @@ class DataGenerator(keras.utils.Sequence):
 
             # load image
             img_path = str(data_info['image_path'])
-            img = cv2.imread(img_path)
+            img = np.load(img_path)
+
+            # img = cv2.imread(img_path)
             # ToDo: This is not probably a best place to resize the image and image
             # img = cv2.resize(img, (self.X_shape[0], self.X_shape[1]))
             # img = cv2.normalize(img, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)

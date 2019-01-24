@@ -3,4 +3,5 @@
 logs/*
 trained_models/*
 *.hdf5
+*npy
 
