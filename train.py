@@ -86,8 +86,8 @@ def _main_():
                    batch_size           = config['train']['batch_size'],
                    nb_epochs            = config['train']['nb_epochs'],
                    learning_rate        = config['train']['learning_rate'],
-                   use_pretrained_model = True,
-                   model_name           = 'trial_2')
+                   use_pretrained_model = bool(config['train']['use_pretrained_model']),
+                   model_name           = config['train']['model_name'])
 
 
 if __name__ == '__main__':

@@ -20,12 +20,16 @@
 
     "model_path":                    "trained_models/",
 
+
     "image_format_extension":        ".jpg",
     "annotations_format_extension":  ".txt",
 
     "batch_size":           2,
     "nb_epochs":            2,
-    "learning_rate":        1e-6
+    "learning_rate":        1e-6,
+    "use_pretrained_model": false,
+    "model_name":           "trial_2"
+
   }
 
 
