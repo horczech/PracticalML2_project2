@@ -135,7 +135,6 @@ class YOLO:
         
         responsible_pred_bbox = tf.greater(iou_bbox1, iou_bbox2)
         #print(responsible_pred_bbox)#(?, 21, 21)
-        #(?, 21, 21) 1 or 0 1代表 bbox1 负责 0代表bbox2负责
         responsible_pred_bbox = tf.cast(responsible_pred_bbox,tf.float32)
         responsible_pred_bbox = tf.expand_dims(responsible_pred_bbox, axis=3)
         #print(responsible_pred_bbox) #(?, 21, 21, 1)
