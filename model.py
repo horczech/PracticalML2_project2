@@ -40,7 +40,7 @@ class YOLO:
         ################################
         # if use_pretrained_model is True than rewrite the default model with the model in the save_model_path
 
-        save_model_path = save_model_path + model_name
+        save_model_path = save_model_path + model_name + '.hdf5'
 
         if use_pretrained_model:
             if os.path.isfile(save_model_path):
