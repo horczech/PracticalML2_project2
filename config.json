@@ -23,9 +23,9 @@
     "image_format_extension":        ".jpg",
     "annotations_format_extension":  ".txt",
 
-    "batch_size":           256,
+    "batch_size":           10,
     "nb_epochs":            100,
-    "learning_rate":        1e-3,
+    "learning_rate":        1e-5,
     "use_pretrained_model": false,
     "model_name":           "model_1.hdf5"
 
