@@ -5,3 +5,5 @@ trained_models/*
 *.hdf5
 *npy
 
+!logs/__init__.py
+!trained_models/__init__.py
