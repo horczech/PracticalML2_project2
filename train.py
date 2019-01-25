@@ -11,8 +11,12 @@ from sklearn.model_selection import train_test_split
 
 def parse_annotation_file(path):
     objects = []
+    path = os.path.expanduser(str(path))
 
-    with open(os.path.expanduser(str(path))) as fp:
+    if not os.path.exists(path):
+        return None
+
+    with open(path) as fp:
         lines = fp.readlines()
 
     for line in lines:
@@ -48,7 +52,8 @@ def parse_input_data(image_folder, annotation_folder, annotation_extension, imag
         data_info["image_path"] = image_name
         data_info["objects"] = parse_annotation_file(annotation_path)
 
-        data_infos.append(data_info)
+        if data_info["image_path"] is not None and data_info["objects"] is not None:
+            data_infos.append(data_info)
 
     return data_infos
 
