@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 def parse_annotation_file(path):
     objects = []
 
-    with open(str(path)) as fp:
+    with open(os.path.expanduser(str(path))) as fp:
         lines = fp.readlines()
 
     for line in lines:
