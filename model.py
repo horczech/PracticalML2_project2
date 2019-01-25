@@ -72,7 +72,7 @@ class YOLO:
         ################################
         # Create callbacks
         ################################
-        checkpoint = ModelCheckpoint(filepath           = save_model_path,
+        checkpoint = ModelCheckpoint(filepath           = 'model_1.hdf5',
                                      monitor            = 'val_loss',
                                      verbose            = 1,
                                      save_best_only     = True,
@@ -90,7 +90,8 @@ class YOLO:
         self.model.fit_generator(generator          = training_generator,
                                  validation_data    = valid_generator,
                                  epochs             = nb_epochs,
-                                 callbacks          = callbacks_list)
+                                 callbacks          = callbacks_list,
+                                 steps_per_epoch    = 100)
 
     def custom_loss(self, y_true, y_pred):
 
