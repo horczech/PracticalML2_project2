@@ -56,9 +56,9 @@ def parse_input_data(image_folder, annotation_folder, annotation_extension, imag
 def _main_():
 
     if tf.test.gpu_device_name():
-        print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
+        print('>>>>> USING GPU: Default GPU Device: {}'.format(tf.test.gpu_device_name()))
     else:
-        print("Please install GPU version of TF")
+        print(">>>>> Please install GPU version of TF")
 
 
     with open(CONFIG_FILE) as config_buffer:

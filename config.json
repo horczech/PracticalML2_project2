@@ -13,8 +13,8 @@
   },
 
   "train":{
-    "train_images_folder":           "data/real_data/training_images",
-    "train_annotations_folder":      "data/real_data/training_annotations",
+    "train_images_folder":           "~/data/data/train",
+    "train_annotations_folder":      "~/data/labels/train_label",
     "validation_dataset_ratio":      0.1,
 
     "model_path":                    "trained_models/",
