@@ -230,7 +230,7 @@ class YOLO:
         
         #loss_1 = tf.losses.absolute_difference(y_true,y_pred)
         '''
-        loss = tf.Print(loss, [loss], message='Total Loss \t', summarize=1000)
+        # loss = tf.Print(loss, [loss], message='Total Loss \t', summarize=1000)
         return loss
 
     def build_yolo_model(self, output_layer_size):
