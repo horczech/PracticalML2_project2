@@ -37,9 +37,9 @@ def parse_input_data(image_folder, annotation_folder, annotation_extension, imag
     if not os.path.exists(os.path.expanduser(str(image_folder))) or not os.path.exists(os.path.expanduser(str(annotation_folder))):
         raise ValueError('Entered file path does not exist! Entered Paths: ' + os.path.expanduser(str(image_folder)) + " and " + os.path.expanduser(str(annotation_folder)))
 
-    image_names = glob.glob(str(image_folder) + '/*' + image_extension)
+    image_names = glob.glob(os.path.expanduser(str(image_folder)) + '/*' + image_extension)
     if len(image_names) == 0:
-        raise ValueError('No images found')
+        raise ValueError('No images found: ' + os.path.expanduser(str(image_folder)))
 
     for image_name in image_names:
         annotation_path = annotation_folder.joinpath(Path(image_name).stem + annotation_extension)
