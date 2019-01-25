@@ -72,7 +72,7 @@ class YOLO:
         ################################
         # Create callbacks
         ################################
-        checkpoint = ModelCheckpoint(filepath           = 'model_1.hdf5',
+        checkpoint = ModelCheckpoint(filepath           = save_model_path,
                                      monitor            = 'val_loss',
                                      verbose            = 1,
                                      save_best_only     = True,
