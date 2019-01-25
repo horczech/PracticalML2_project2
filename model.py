@@ -48,10 +48,11 @@ class YOLO:
             else:
                 raise ValueError("No pretrained model found in path: {}".format(save_model_path))
         else:
-            # ToDo: A lot of parameters... maybe it is good idea to tune them
             # optimizer = optimizers.Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
             # sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-            optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
+            # optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
+
+            optimizer = optimizers.Adam(lr=learning_rate)
             self.model.compile(loss=self.custom_loss, optimizer=optimizer)
 
         ################################
