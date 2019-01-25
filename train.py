@@ -34,8 +34,8 @@ def parse_annotation_file(path):
 def parse_input_data(image_folder, annotation_folder, annotation_extension, image_extension):
     data_infos = []
 
-    if not os.path.exists(str(image_folder)) or not os.path.exists(str(annotation_folder)):
-        raise ValueError('Entered file path does not exist! Entered Paths: ' + str(image_folder) + " and " + str(annotation_folder))
+    if not os.path.exists(os.path.expanduser(str(image_folder))) or not os.path.exists(os.path.expanduser(str(annotation_folder))):
+        raise ValueError('Entered file path does not exist! Entered Paths: ' + os.path.expanduser(str(image_folder)) + " and " + os.path.expanduser(str(annotation_folder)))
 
     image_names = glob.glob(str(image_folder) + '/*' + image_extension)
     if len(image_names) == 0:
