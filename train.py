@@ -101,7 +101,8 @@ def _main_():
                    nb_epochs            = config['train']['nb_epochs'],
                    learning_rate        = config['train']['learning_rate'],
                    use_pretrained_model = bool(config['train']['use_pretrained_model']),
-                   model_name           = config['train']['model_name'])
+                   model_name           = config['train']['model_name'],
+                   steps_per_epoch      = int(config['train']['steps_per_epoch']))
 
 
 if __name__ == '__main__':
