@@ -72,6 +72,7 @@ def _main_():
     ################################
     # Load data info
     ################################
+    print('>>>>> Loading the annotation data')
     train_data_infos = parse_input_data(image_folder=Path(config['train']['train_images_folder']),
                                         annotation_folder=Path(config['train']['train_annotations_folder']),
                                         annotation_extension=config['train']['annotations_format_extension'],
@@ -83,6 +84,7 @@ def _main_():
     ################################
     # Make and train model
     ################################
+    print('>>>>> Creating model')
     yolo = YOLO(input_size          = tuple(config['model']['input_size']),
                 grid_size           = int(config['model']['grid_size']),
                 bbox_count          = int(config['model']['bboxes_per_grid_cell']),
@@ -91,6 +93,7 @@ def _main_():
                 lambda_noobj        = config['model']['lambda_noobj'],
                 bbox_params         = config['model']['bbox_params'])
 
+    print('>>>>> Starting the training process')
     yolo.train_gen(training_infos       = train_dataset,
                    validation_infos     = validation_dataset,
                    save_model_path      = config['train']['model_path'],
