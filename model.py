@@ -5,6 +5,7 @@ from keras.layers import Conv2D, Input, Flatten, Dense, MaxPool2D
 from keras.layers.advanced_activations import LeakyReLU
 from keras.models import Model, load_model
 from keras import optimizers
+from keras.metrics import sparse_categorical_accuracy
 from utils import calculate_IOU
 from data_generator import DataGenerator
 import os
@@ -53,7 +54,7 @@ class YOLO:
             # optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
 
             optimizer = optimizers.Adam(lr=learning_rate)
-            self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=['categorical_accuracy'])
+            self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=[sparse_categorical_accuracy])
 
         ################################
         # Create data generators
