@@ -45,7 +45,7 @@ class YOLO:
 
         if use_pretrained_model:
             if os.path.isfile(save_model_path):
-                self.model = load_model(save_model_path, custom_objects={'custom_loss': self.custom_loss})
+                self.model = load_model(save_model_path, custom_objects={'custom_loss': self.custom_loss, 'custom_acc': self.custom_acc})
             else:
                 raise ValueError("No pretrained model found in path: {}".format(save_model_path))
         else:
