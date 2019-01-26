@@ -30,9 +30,8 @@ class YOLO:
         self.bbox_params = bbox_params
 
         # grid_cell_count_row x grid_cell_count_coll x bboxes_count_per_cell + class_count
-        output_layer_size = self.grid_size * self.grid_size * (self.bbox_count * self.bbox_params + len(self.classes))
+        self.output_layer_size = self.grid_size * self.grid_size * (self.bbox_count * self.bbox_params + len(self.classes))
 
-        self.model = self.build_yolo_model(output_layer_size)
 
     def train_gen(self, training_infos, validation_infos, save_model_path, batch_size, nb_epochs, learning_rate, use_pretrained_model, model_name, steps_per_epoch):
 
@@ -44,6 +43,7 @@ class YOLO:
         save_model_path = save_model_path + model_name + '.hdf5'
 
         if use_pretrained_model:
+            print(">>>>>> Loading saved model")
             if os.path.isfile(save_model_path):
                 self.model = load_model(save_model_path, custom_objects={'custom_loss': self.custom_loss, 'custom_acc': self.custom_acc})
             else:
@@ -52,7 +52,8 @@ class YOLO:
             # optimizer = optimizers.Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
             # sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
             # optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
-
+            print(">>>>>> Creating new model")
+            self.model = self.build_yolo_model(self.output_layer_size)
             optimizer = optimizers.Adam(lr=learning_rate)
             self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=[self.custom_acc])
 
