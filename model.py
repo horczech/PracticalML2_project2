@@ -53,7 +53,7 @@ class YOLO:
             # optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
 
             optimizer = optimizers.Adam(lr=learning_rate)
-            self.model.compile(loss=self.custom_loss, optimizer=optimizer)
+            self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=['accuracy'])
 
         ################################
         # Create data generators
@@ -91,7 +91,7 @@ class YOLO:
                                  validation_data    = valid_generator,
                                  epochs             = nb_epochs,
                                  callbacks          = callbacks_list,
-                                 steps_per_epoch    = 100)
+                                 steps_per_epoch    = steps_per_epoch)
 
     def custom_loss(self, y_true, y_pred):
 
