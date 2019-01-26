@@ -29,7 +29,6 @@
     "use_pretrained_model": false,
     "model_name":           "model_1",
     "steps_per_epoch":      100
-
   }
 
 

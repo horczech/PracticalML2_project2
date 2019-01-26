@@ -91,7 +91,7 @@ class YOLO:
                                  validation_data    = valid_generator,
                                  epochs             = nb_epochs,
                                  callbacks          = callbacks_list,
-                                 steps_per_epoch    = steps_per_epoch)
+                                 steps_per_epoch    = 100)
 
     def custom_loss(self, y_true, y_pred):
 
