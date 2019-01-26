@@ -1,7 +1,7 @@
 {
   "model" : {
       "input_size":   [448, 448, 3],
-      "grid_size":    21,
+      "grid_size":    15,
       "bboxes_per_grid_cell": 2,
       "bbox_params": 5,
       "class_names":  ["bus", "traffic light", "traffic sign", "person", "bike", "truck", "motor", "car","train", "rider"],
