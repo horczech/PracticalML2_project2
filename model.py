@@ -5,7 +5,7 @@ from keras.layers import Conv2D, Input, Flatten, Dense, MaxPool2D
 from keras.layers.advanced_activations import LeakyReLU
 from keras.models import Model, load_model
 from keras import optimizers
-from keras.metrics import sparse_categorical_accuracy
+from keras.metrics import categorical_accuracy
 from utils import calculate_IOU
 from data_generator import DataGenerator
 import os
@@ -54,7 +54,7 @@ class YOLO:
             # optimizer = optimizers.SGD(lr=1e-16, decay=1e-6, nesterov=True)
 
             optimizer = optimizers.Adam(lr=learning_rate)
-            self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=[sparse_categorical_accuracy])
+            self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=[self.custom_acc])
 
         ################################
         # Create data generators
@@ -93,6 +93,19 @@ class YOLO:
                                  epochs             = nb_epochs,
                                  callbacks          = callbacks_list,
                                  steps_per_epoch    = steps_per_epoch)
+
+    def custom_acc(self, y_true, y_pred):
+        y_true_shape = (-1, self.grid_size, self.grid_size, self.bbox_params + len(self.classes))
+        y_pred_shape = (-1, self.grid_size, self.grid_size, self.bbox_count * self.bbox_params + len(self.classes))
+
+        y_true = tf.reshape(y_true, y_true_shape, name='reshape_y_true')
+        y_pred = tf.reshape(y_pred, y_pred_shape, name='reshape_y_pred')
+
+        # shape=(?, 21, 21, 10),
+        predicted_class_prob = y_pred[:, :, :, 10:]
+        true_class_prob = y_true[:, :, :, 5:]
+
+        return categorical_accuracy(true_class_prob, predicted_class_prob)
 
     def custom_loss(self, y_true, y_pred):
 
@@ -281,126 +294,4 @@ class YOLO:
 
         return model
 
-    # def build_network(self, input_size, output_layer_size):
-    #     input_image = Input(shape=input_size, name='input_layer')
-    #
-    #     # Layer 1
-    #     x = Conv2D(filters=64, kernel_size=(7, 7), strides=2, padding='same')(input_image)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_1')(x)
-    #
-    #     # Layer 2
-    #     x = MaxPool2D(pool_size=(2, 2), strides=2)(x)
-    #
-    #     # Layer 3
-    #     x = Conv2D(filters=192, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_2')(x)
-    #
-    #     # Layer 4
-    #     x = MaxPool2D(pool_size=(2, 2), strides=2)(x)
-    #
-    #     # Layer 5
-    #     x = Conv2D(filters=128, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_3')(x)
-    #
-    #     # Layer 6
-    #     x = Conv2D(filters=256, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_4')(x)
-    #
-    #     # Layer 7
-    #     x = Conv2D(filters=256, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_5')(x)
-    #
-    #     # Layer 8
-    #     x = Conv2D(filters=512, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_6')(x)
-    #
-    #     # Layer 9
-    #     x = MaxPool2D(pool_size=(2, 2), strides=2)(x)
-    #
-    #     # Layer 10
-    #     x = Conv2D(filters=256, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_7')(x)
-    #
-    #     # Layer 11
-    #     x = Conv2D(filters=512, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_8')(x)
-    #
-    #     # Layer 12
-    #     x = Conv2D(filters=256, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_9')(x)
-    #
-    #     # Layer 13
-    #     x = Conv2D(filters=512, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_10')(x)
-    #
-    #     # Layer 14
-    #     x = Conv2D(filters=256, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_11')(x)
-    #
-    #     # Layer 15
-    #     x = Conv2D(filters=512, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_12')(x)
-    #
-    #     # Layer 16
-    #     x = Conv2D(filters=256, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_13')(x)
-    #
-    #     # Layer 17
-    #     x = Conv2D(filters=512, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_14')(x)
-    #
-    #     # Layer 18
-    #     x = Conv2D(filters=512, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_15')(x)
-    #
-    #     # Layer 19
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_16')(x)
-    #
-    #     # Layer 20
-    #     x = MaxPool2D(pool_size=(2, 2), strides=2)(x)
-    #
-    #     # Layer 21
-    #     x = Conv2D(filters=512, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_17')(x)
-    #
-    #     # Layer 22
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_18')(x)
-    #
-    #     # Layer 23
-    #     x = Conv2D(filters=512, kernel_size=(1, 1), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_19')(x)
-    #
-    #     # Layer 24
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_20')(x)
-    #
-    #     # Layer 25
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_21')(x)
-    #
-    #     # Layer 26
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), strides=2, padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_22')(x)
-    #
-    #     # Layer 27
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_23')(x)
-    #
-    #     # Layer 28
-    #     x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same')(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_24')(x)
-    #
-    #     # Layer 29
-    #     x = Dense(units=4096)(x)
-    #     x = LeakyReLU(alpha=0.1, name='LeakyRelu_25')(x)
-    #
-    #     # Layer 30
-    #     x = Dense(units=output_layer_size)(x)
-    #     # x = ReLU(max_value=1)(x)
-    #     # x = LeakyReLU(alpha=0.0, name='LeakyRelu_69')(x)
-    #
-    #     # x = ReLU(name='ReLU_69')(x)
-    #
-    #     return Model(input_image, x)
+
