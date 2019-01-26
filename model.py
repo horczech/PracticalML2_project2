@@ -92,7 +92,7 @@ class YOLO:
                                  validation_data    = valid_generator,
                                  epochs             = nb_epochs,
                                  callbacks          = callbacks_list,
-                                 steps_per_epoch    = steps_per_epoch)
+                                 steps_per_epoch    = None)
 
     def custom_acc(self, y_true, y_pred):
         y_true_shape = (-1, self.grid_size, self.grid_size, self.bbox_params + len(self.classes))
