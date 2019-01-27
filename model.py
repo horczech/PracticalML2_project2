@@ -258,7 +258,7 @@ class YOLO:
                                       pooling=None)
         
         # ToDo: Is it working?
-        inception_model.trainable = False
+        # inception_model.trainable = False
 
         x = inception_model(input_image)
         #x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same', name='yolo_conv_0')(input_image)
