@@ -15,7 +15,7 @@
   "train":{
     "train_images_folder":           "~/data/data/train",
     "train_annotations_folder":      "~/data/labels/train_label",
-    "validation_dataset_ratio":      0.1,
+    "validation_dataset_ratio":      0.05,
 
     "model_path":                    "trained_models/",
 
@@ -23,12 +23,12 @@
     "image_format_extension":        ".jpg",
     "annotations_format_extension":  ".txt",
 
-    "batch_size":           10,
-    "nb_epochs":            100,
+    "batch_size":           16,
+    "nb_epochs":            10,
     "learning_rate":        1e-5,
     "use_pretrained_model": false,
     "model_name":           "model_15_grid_nofreeze",
-    "steps_per_epoch":      500
+    "steps_per_epoch":      null
   }
 
 
