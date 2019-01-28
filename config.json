@@ -24,7 +24,7 @@
     "annotations_format_extension":  ".txt",
 
     "batch_size":           10,
-    "nb_epochs":            100,
+    "nb_epochs":            500,
     "learning_rate":        1e-5,
     "use_pretrained_model": false,
     "model_name":           "model_15_grid_aug_nofreeze",
