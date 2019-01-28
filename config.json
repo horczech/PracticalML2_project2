@@ -27,7 +27,7 @@
     "nb_epochs":            500,
     "learning_rate":        1e-5,
     "use_pretrained_model": false,
-    "model_name":           "model_15_grid_aug_nofreeze",
+    "model_name":           "model_15_grid_nofreeze",
     "steps_per_epoch":      1000
   }
 
