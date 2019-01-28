@@ -45,7 +45,7 @@ class YOLO:
         if use_pretrained_model:
             print(">>>>>> Loading saved model")
             if os.path.isfile(save_model_path):
-                self.model = load_model(save_model_path, custom_objects={'custom_loss': self.custom_loss, 'custom_acc': self.custom_acc})
+                self.model = load_model(save_model_path, custom_objects={'custom_loss': self.custom_loss})
             else:
                 raise ValueError("No pretrained model found in path: {}".format(save_model_path))
         else:
@@ -55,7 +55,7 @@ class YOLO:
             print(">>>>>> Creating new model")
             self.model = self.build_yolo_model(self.output_layer_size)
             optimizer = optimizers.Adam(lr=learning_rate)
-            self.model.compile(loss=self.custom_loss, optimizer=optimizer, metrics=[self.custom_acc])
+            self.model.compile(loss=self.custom_loss, optimizer=optimizer)
 
         ################################
         # Create data generators

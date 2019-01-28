@@ -22,6 +22,6 @@ def calculate_IOU(bbox1, bbox2):
     union_area = tf.subtract(tf.multiply(bbox1[..., 2], bbox1[..., 3]) + tf.multiply(bbox2[..., 2], bbox2[..., 3]),
                              intersection_area)
 
-    iou = tf.divide(intersection_area, union_area)
+    iou = tf.divide(intersection_area, union_area+1e-10)
 
     return iou
