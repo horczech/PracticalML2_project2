@@ -26,8 +26,8 @@
     "batch_size":           10,
     "nb_epochs":            100,
     "learning_rate":        1e-5,
-    "use_pretrained_model": true,
-    "model_name":           "model_15_grid",
+    "use_pretrained_model": false,
+    "model_name":           "model_15_grid_aug_nofreeze",
     "steps_per_epoch":      1000
   }
 

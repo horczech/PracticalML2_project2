@@ -257,7 +257,6 @@ class YOLO:
                                       input_shape=self.input_size,
                                       pooling=None)
         
-        # ToDo: Is it working?
         # inception_model.trainable = False
 
         x = inception_model(input_image)
