@@ -128,16 +128,16 @@ class DataGenerator(keras.utils.Sequence):
 
             img = cv2.imread(img_path)
 
-            # img_aug, target_aug = self.aug_image(img, data_info['objects'])
+            img_aug, target_aug = self.aug_image(img, data_info['objects'])
 
             # img_aug = self.aug_pipe.augment_image(img)
-            img_aug = img
+            # img_aug = img
 
             img_aug = cv2.resize(img_aug, (self.X_shape[0], self.X_shape[1]))
             img_aug = cv2.normalize(img_aug, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
 
             # parse labels (result)
-            target_aug = self.parse_object_data(data_info['objects'])
+            target_aug = self.parse_object_data(target_aug)
 
             # store sample
             X[i,] = img_aug

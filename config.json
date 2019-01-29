@@ -23,11 +23,11 @@
     "image_format_extension":        ".jpg",
     "annotations_format_extension":  ".txt",
 
-    "batch_size":           16,
-    "nb_epochs":            100,
+    "batch_size":           10,
+    "nb_epochs":            200,
     "learning_rate":        1e-5,
     "use_pretrained_model": false,
-    "model_name":           "model_15_grid_nofreeze_constant",
+    "model_name":           "model_11",
     "steps_per_epoch":      1000
   }
 

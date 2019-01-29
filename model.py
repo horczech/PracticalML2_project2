@@ -257,11 +257,10 @@ class YOLO:
                                       input_shape=self.input_size,
                                       pooling=None)
         
-        # inception_model.trainable = False
+        inception_model.trainable = False
 
         x = inception_model(input_image)
-        #x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same', name='yolo_conv_0')(input_image)
-        ''''''
+
         # Layer 1
         x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same', name='yolo_conv_1')(x)
         x = LeakyReLU(alpha=0.1, name='yolo_relu_1')(x)
@@ -277,20 +276,16 @@ class YOLO:
         # Layer 4
         x = Conv2D(filters=1024, kernel_size=(3, 3), padding='same', name='yolo_conv_4')(x)
         x = LeakyReLU(alpha=0.1, name='yolo_relu_4')(x)
-
-        
         x = Flatten()(x)
+
         # Layer 29
         x = Dense(units=4096, name='yolo_dense_1')(x)
         x = LeakyReLU(alpha=0.1, name='yolo_relu_5')(x)
         
         # Layer 30
         x = Dense(units=output_layer_size, name='yolo_dense_2', activation='relu')(x)
-        
-        # x = LeakyReLU(alpha=0.0, name='yolo_relu_6')(x)
 
         model = Model(inputs=input_image, outputs=x)
-        #model.trainable = False
 
         return model
 
