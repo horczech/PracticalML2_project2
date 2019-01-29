@@ -32,13 +32,9 @@
   },
 
   "predict":{
-    "model_path2": "~/code/PracticalML2_project2/trained_models/model_15_grid_v3.hdf5",
-    "model_path": "~/PycharmProjects/YOLO_v1/trained_models/model_11.hdf5",
-    "image_path": "~/data/data/train/b1cd1e94-26dd524f.jpg",
+    "model_path": "~/code/PracticalML2_project2/trained_models/model_15_grid_v3.hdf5",
+    "image_path": "~/data/data/train/209aed77-638da0c1.jpg",
 
-    "output": "/Users/horczech/PycharmProjects/YOLO_v1/results/result.npy"
-
+    "output": "~/code/PracticalML2_project2/results/~/code/209aed77-638da0c1.npy"
   }
-
-
 }
