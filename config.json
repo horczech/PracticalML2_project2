@@ -29,6 +29,15 @@
     "use_pretrained_model": false,
     "model_name":           "model_11",
     "steps_per_epoch":      1000
+  },
+
+  "predict":{
+    "model_path2": "~/code/PracticalML2_project2/trained_models/model_15_grid_v3.hdf5",
+    "model_path": "~/PycharmProjects/YOLO_v1/trained_models/model_11.hdf5",
+    "image_path": "~/data/data/train/b1cd1e94-26dd524f.jpg",
+
+    "output": "/Users/horczech/PycharmProjects/YOLO_v1/results/result.npy"
+
   }
 
 

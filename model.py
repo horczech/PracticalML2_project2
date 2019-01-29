@@ -9,6 +9,8 @@ from keras.metrics import categorical_accuracy
 from utils import calculate_IOU
 from data_generator import DataGenerator
 import os
+import  numpy as np
+import cv2
 from constants import LOG_FILE_PATH
 
 
@@ -288,5 +290,31 @@ class YOLO:
         model = Model(inputs=input_image, outputs=x)
 
         return model
+
+
+    def predict(self, image_path, model_path, output_file_path):
+
+        image = cv2.imread(image_path)
+        image = cv2.resize(image, (self.input_size[0], self.input_size[1]))
+        image = cv2.normalize(image, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+
+
+        model = load_model(model_path, custom_objects={'custom_loss': self.custom_loss})
+
+
+        # fake batch
+        images = np.expand_dims(image, axis=0)
+
+        prediction = model.predict(images)
+
+        np.save(output_file_path, prediction)
+
+        print('Result successfully saved')
+
+
+
+
+
+
 
 
