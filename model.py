@@ -299,7 +299,7 @@ class YOLO:
         image = cv2.normalize(image, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
 
 
-        model = load_model(model_path, custom_objects={'custom_loss': self.custom_loss})
+        model = load_model(model_path, custom_objects={'custom_loss': self.custom_loss, 'custom_acc': self.custom_acc})
 
 
         # fake batch
